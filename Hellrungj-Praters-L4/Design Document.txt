@@ -1,0 +1,213 @@
+Design Document: A6
+By: John Hellrung
+Jan Perce
+CSC 386
+
+CRN Cards:
+
+Class name: 	Vertex
+Class Methods: 	Class Collaborations (other classes):
+•	Initializer
+•	New """if a Vertex with (label) already exists, return a reference to it; otherwise create a new one (and store a reference in the cache).
+       """
+•	Representation “""Returns a string representation of this object that can be evaluated as a Python expression."""	•	 Driver
+Class Data: 	Class Collaborations (other classes):
+•	cache	•   
+
+Class name: 	Edge
+Class Methods: 	Class Collaborations (other classes):
+•	__new__         Constructor; creates a list of two vertices
+•	Representation """Returns a string representation of this object that can be evaluated as a Python expression."""	•	 Driver
+Class Data: 	Class Collaborations (other classes):
+•		•   
+
+Class name: 	Graph
+Class Methods: 	Class Collaborations (other classes):
+•	Initializer: Creates a new Graph object that is a dictionary of a dictionary
+•	String representation: Overloads the existing string class to convert the dictionary to string object
+•	Representation: Returns a string representation of the graph class that can evaluated as a Python expression.
+•	Add Vertex: Adds a vertex to the graph
+•	Add Edge: Adds an edge to the graph by adding an entry in both directions.
+•	Remove Edge: Removes edge from the graph
+•	Get Edge: Returns the edge if it exists
+•	Has Edge = Get Edge
+•	Vertices: returns a list of vertices in the graph
+•	Edges: Returns a set of edges in the graph
+•	Out Vertices: Returns a list of vertices that can be reached in one hop from a given vertex
+•	Out Edges: Returns the list of edges in a vertex
+•	Add All Edges: makes a complete graph by adding edges between all pairs of vertices
+•	Add Regular Edges: Make a regular graph with degree k if possible; otherwise raises an exception
+•	Add Regular Edges Odd: Adds an extra edge across the graph to finish off a regular graph with odd degree. The Number of vertices must be even.
+•	bfs: Breadth first search	•	 Driver
+Class Data: 	Class Collaborations (other classes):
+•		•   
+
+Class name: 	GraphCanvas
+Class Methods: 	Class Collaborations (other classes):
+•	draw_vertex: """a GraphCanvas is a canvas that knows how to draw Vertices  and Edges"""
+•	draw_edge         """draw a Vertex as a yellow circle with radius (r) and text (v.label)"""
+•	clear """Delete all canvas items."""	•	 Driver
+Class Data: 	Class Collaborations (other classes):
+•		•   
+
+Class name: 	GraphWorld
+Class Methods: 	Class Collaborations (other classes):
+•	__init__
+•	setup  """Create the widgets."""
+•	show_graph         """Draws the Vertices and Edges of Graph (g) using the positions in Layout (layout)."""
+•	clear   “Deletes all canvas items”	•	 
+Class Data: 	Class Collaborations (other classes):
+•		•   
+
+Class name: 	CircleLayout
+Class Methods: 	Class Collaborations (other classes):
+
+•	__init__ # initializer	•	The Layout class  
+Class Data: 	Class Collaborations (other classes):
+•	self[v] = (x, y) # Stores a vertex for the radius of the circle layout 	•   N/A
+
+Class name: 	RandomLayout
+Class Methods: 	Class Collaborations (other classes):
+
+•	random_pos """choose a random position and return it as a tuple"""
+•	spread_vertex  """Keep choosing random positions for v until it is at least min_dist units from the vertices in others.  Each time it fails, it relaxes min_dist by 10%. """
+•	spread_vertices         """Moves the vertices around until no two are closer together than a minimum distance."""	•	The Layout class 
+Class Data: 
+	Class Collaborations (other classes):
+•	self.max #sets the max pos value for the class. It does though method parameters. Note the default value is 10. 
+•	self[v] = self.random_pos() # Stores a random vertex for the radius of the circle layout 	•   
+
+
+Class name: 	Node
+Class Methods: 	Class Collaborations (other classes):
+•		•	
+Class Data: 	Class Collaborations (other classes):
+•	Root
+•	Left_Edge
+•	Right_Edge  
+
+	•	BBB
+
+
+
+Class name: 	BBB (Stand for Branch and Bound with Backtracking)
+Class Methods: 	Class Collaborations (other classes):
+•	Binary_Tree See further Detail Below
+•	Bound: See further Detail Below
+•	Back_Tracking See further Detail Below
+•	Pruning: See further Detail Below
+•	Node
+•	File_Data
+Class Data: 	Class Collaborations (other classes):
+•	  Filename
+	•   Driver
+
+
+
+
+Class name: 	File_Data
+Class Methods: 	Class Collaborations (other classes):
+•	File_writeread(filename, task, CorList=[]) See further Detail Below 
+•	VertexDisList(filename) See further Detail Below
+•	 	•	BBB
+•	Driver 
+Class Data: 	Class Collaborations (other classes):
+•	N/A because their no an object just methods changing making a file based on input data or taking usable information from a file   
+
+	•    None
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+Pseudocode: 
+
+Input/output Data: Reused code from L3
+Name: file_writeread
+(filename, task, CorList=[])
+Method: “File_Data” Class 
+'''
+:param filename: Takes in a string to be used as a filename
+:param task: a char and that tell the method read or write
+:param CorList: a list of item that is to writen in the file
+Read or Write to a file or return 0 if the the task is not 'w' or 'r'
+:return: A list, None, or 0
+'''
+if task == "r":
+	textfile = open(filename, "r")
+           	oldlines = textfile.readlines()
+            	lines = []
+            	for i in oldlines:
+                	lines.append(i.split('\n')[0] + " |")
+            	textfile.close()
+            	return lines
+        elif task == "w":
+            	textfile = open(filename, "w")
+            	for i in CorList:
+                	textfile.write(i)
+            	textfile.close()
+        else:
+            	print("Error!")
+            	return 0
+
+Use Data from a Text Document and Translate into a usable List: Reused code from L3
+Name: VertexDisList
+(filename)
+Method: “File_Data” Class
+'''
+:param filename: Takes in a string to be used as a filename        
+Read the file based on the filename and then appends the second and third number after line 5 until it see EOF        
+:return: A list of coordinates        
+'''        
+lines = self.file_writeread(Textfile,'r')        
+Index = 6        
+EOF = False
+VertexDisList = []        
+while EOF == False:            
+	spaces = 0
+	VertexDis = []            
+	NumberList = []            
+	index = 0 
+	# print("NewLine ---------------------------")
+	for i in lines[Index]:
+	# print("T " + str(Index-6) + " I " + str(i) + " IN " + str(index) + " S " + str(spaces) + " L " + str(NumberList) + " VL " + str(VertexDis) + " FVL " + str(VertexDisList))
+	if i == ' ':
+		if spaces > 0:
+			Number = "".join(str(i) for i in NumberList)
+			NumberList = []
+			VertexDis.append(int(Number))
+		else:
+			spaces += 1
+	else:
+		if spaces > 0:
+		NumberList.append(i)
+		index += 1
+	if i == "|":
+		VertexDisList.append(tuple(VertexDis))
+	Index += 1
+	if lines[Index] == "EOF |":
+		EOF = True
+	return VertexDisList
+
+Find the Distance of Every Edge: Pseudocode 
+Calculate the every edge distance for every node by using the distance formula.
+Store the Calculate in a Dictionary and that can be easiest accessed. 
+
+Making a Binary Tree: Pseudocode:
+Takes a list and transforms that into a Binary Tree using the Node class
+
+Creates a Bound: Pseudocode:  
+bound starts at 0
+bound += the smallest cost of any edge from the current city 
+# proceed from the current city
+for every city c that has not been visited yet
+	bound += the two smallest costs for edges to/from c 
+	# to get to c and then to leave c
+bound += the smallest cost of any edge to the starting city 
+# where the tour ends
+
+
+Back Tracking: Pseudocode: (Recursion)
+
+
+Pruning: Pseudocode:
+Cut the tree based on the current node location
